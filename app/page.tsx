@@ -1,5 +1,3 @@
-import EnhancedPage from '../Landing_page/crypto-payment-gateway/app/enhanced-page'
+import Home from './modified-enhanced-page'
 
-export default function Home() {
-  return <EnhancedPage />
-}
+export default Home
