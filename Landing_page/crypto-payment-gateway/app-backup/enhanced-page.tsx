@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ArrowRight, CheckCircle, CreditCard, Database, Globe, Lock, RefreshCcw, Shield, Wallet } from "lucide-react"
+import { ArrowRight, CheckCircle, CreditCard, Database, Globe, Lock, RefreshCcw, Shield, Wallet } from "../../../components/ui/icons"
 
 import { BlockchainVisualization } from "@/components/blockchain-visualization"
 import { EthereumLogo } from "@/components/ethereum-logo"
