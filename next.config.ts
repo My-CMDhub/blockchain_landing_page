@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ['lucide-react'],
+  experimental: {
+    serverComponentsExternalPackages: ['lucide-react']
+  }
 };
 
 export default nextConfig;
