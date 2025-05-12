@@ -11,9 +11,9 @@ const nextConfig = {
   },
   // Exclude certain directories from the build process
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  // Only allow Next.js to process the app directory and components directory
+  // Set up proper path aliases
   experimental: {
-    appDir: true,
+    esmExternals: true
   }
 };
 
