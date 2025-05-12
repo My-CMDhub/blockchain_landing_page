@@ -9,12 +9,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Exclude certain directories from the build process
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  // Set up proper path aliases
-  experimental: {
-    esmExternals: true
-  }
+  // webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+  //   config.resolve.alias = {
+  //     ...config.resolve.alias,
+  //     '@': path.resolve(__dirname, './'),
+  //   };
+  //   return config;
+  // },
 };
 
 module.exports = nextConfig; 
