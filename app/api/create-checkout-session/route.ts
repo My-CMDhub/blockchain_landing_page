@@ -7,23 +7,16 @@ console.log("Stripe secret key available:", !!process.env.STRIPE_SECRET_KEY);
 // Initialize Stripe with the secret key from environment variables
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY
 if (!stripeSecretKey) {
-  console.error('Missing STRIPE_SECRET_KEY environment variable')
+  throw new Error('Missing STRIPE_SECRET_KEY environment variable. Please set this in your .env.local file or Vercel environment variables.')
 }
 
 // Create Stripe instance
-const stripe = new Stripe(stripeSecretKey || '', {
+const stripe = new Stripe(stripeSecretKey, {
   typescript: true,
 })
 
 export async function POST(request: Request) {
   try {
-    if (!stripeSecretKey) {
-      return NextResponse.json(
-        { error: 'Stripe secret key is not configured in the environment variables' },
-        { status: 500 }
-      )
-    }
-    
     const body = await request.json()
     const { items } = body
 

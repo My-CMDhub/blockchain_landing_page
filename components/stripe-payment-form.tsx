@@ -19,22 +19,19 @@ export function StripePaymentForm() {
   
   useEffect(() => {
     // Check if the Stripe publishable key is available
-    if (process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-      setStripeReady(true)
-    } else {
-      console.error("Stripe publishable key is not set in the environment variables")
-      setStripeReady(false)
-    }
+    // We check simply if we can load the Stripe instance
+    const checkStripe = async () => {
+      const stripePromise = await getStripe();
+      setStripeReady(!!stripePromise);
+    };
+    
+    checkStripe();
   }, [])
   
   const handleStripePayment = async () => {
     setLoading(true)
     
     try {
-      if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-        throw new Error('Stripe publishable key is not set')
-      }
-      
       // Create a checkout session on the server
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
