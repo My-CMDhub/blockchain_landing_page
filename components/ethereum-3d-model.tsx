@@ -40,13 +40,27 @@ export function Ethereum3DModel({
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
     scene.add(ambientLight)
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight.position.set(1, 1, 2)
-    scene.add(directionalLight)
+    // Add a cyan point light for teal/cyan glow
+    const cyanLight = new THREE.PointLight(0x00ffff, 2)
+    cyanLight.position.set(1, 1, 2)
+    scene.add(cyanLight)
 
-    const pointLight = new THREE.PointLight(0xffffff, 1)
-    pointLight.position.set(-2, 1, 3)
-    scene.add(pointLight)
+    // Add a purple point light for violet/pink glow
+    const purpleLight = new THREE.PointLight(0xff00cc, 2)
+    purpleLight.position.set(-2, 1, 3)
+    scene.add(purpleLight)
+
+    // Add a blue point light
+    const blueLight = new THREE.PointLight(0x0088ff, 1.5)
+    blueLight.position.set(0, -2, 1)
+    scene.add(blueLight)
+
+    // Add a spotlight for extra definition
+    const spotLight = new THREE.SpotLight(0xffffff, 1)
+    spotLight.position.set(5, 5, 5)
+    spotLight.angle = Math.PI / 6
+    spotLight.penumbra = 0.2
+    scene.add(spotLight)
 
     // Add controls
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -72,7 +86,24 @@ export function Ethereum3DModel({
       "/base_basic_shaded.glb", // This will be the path to your GLB file
       (gltf: any) => {
         const model = gltf.scene
-        // No color scheme/material override, just add the model as-is
+        
+        // Apply custom materials for neon effect
+        model.traverse((child: any) => {
+          if (child.isMesh) {
+            // Create a glowing material
+            const material = new THREE.MeshStandardMaterial({
+              color: 0x00ffff, // Cyan base color
+              emissive: 0x00ffff, // Cyan glow
+              emissiveIntensity: 0.4,
+              metalness: 0.8,
+              roughness: 0.2,
+            })
+            
+            // Add second UV set for light map
+            child.material = material
+          }
+        })
+        
         // Center and scale the model
         const box = new THREE.Box3().setFromObject(model)
         const center = box.getCenter(new THREE.Vector3())
