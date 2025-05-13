@@ -1,25 +1,52 @@
-# Welcome to Next.js
+# CryptoGate - Ethereum Payment Gateway Demo
 
-This is the most minimal starter for your Next.js project.
+This project demonstrates a blockchain-based payment gateway for accepting Ethereum payments. It includes both a landing page and a complete demo shopping flow.
 
-## Deploy your own
+## Features
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/hello-world&project-name=hello-world&repository-name=hello-world)
+- Landing page showcasing the payment gateway features
+- Product demo page with a sample product
+- Shopping cart functionality
+- Payment method selection (Cryptocurrency or Credit Card)
+- Cryptocurrency payment page with QR code and address
+- Order confirmation page
 
-## How to use
+## Demo Flow
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+1. Visit the landing page
+2. Click "View Demo" to see the product page
+3. Add the product to your cart
+4. Proceed to checkout
+5. Select a payment method (Ethereum, Polygon, or Binance Coin)
+6. View the payment screen with QR code and instructions
+7. Complete the flow to see the confirmation page
+
+## Technology Stack
+
+- Next.js
+- React
+- Tailwind CSS
+- Shadcn UI Components
+- Vercel for deployment
+
+## Getting Started
 
 ```bash
-npx create-next-app --example hello-world hello-world-app
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev
 ```
 
-```bash
-yarn create next-app --example hello-world hello-world-app
-```
+Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 
-```bash
-pnpm create next-app --example hello-world hello-world-app
-```
+## Deployment
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+This project is configured for deployment on Vercel. Simply push changes to the main branch, and the application will be automatically deployed.
+
+## Important Notes
+
+- This is a demo application. No real cryptocurrency transactions are processed.
+- The payment addresses and QR codes are for demonstration purposes only.
+- The application uses client-side components for interactive elements to ensure compatibility with Next.js server components.

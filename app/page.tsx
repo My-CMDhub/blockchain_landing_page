@@ -85,9 +85,9 @@ export default function Home() {
                     Start Accepting ETH
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Button> </a>
-                 <a href="http://localhost:3000/onboarding.html" target="_blank" ><Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5">
+                 <Link href="/products"><Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5">
                     View Demo
-                  </Button> </a> 
+                  </Button></Link>
                 </div>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="flex items-center gap-1">
