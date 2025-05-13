@@ -8,9 +8,6 @@ import { useCart } from "./cart-context"
 import { toast } from "sonner"
 import { getStripe } from "@/lib/stripe-client"
 
-// We should log the state of the publishable key for debugging
-console.log("Stripe publishable key available:", !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-
 export function StripePaymentForm() {
   const router = useRouter()
   const { getCartTotal, cartItems } = useCart()
