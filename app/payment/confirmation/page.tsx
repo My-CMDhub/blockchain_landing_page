@@ -7,12 +7,11 @@ import { Separator } from "@/components/ui/separator"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { useCart } from "@/components/cart-context"
-import { useEffect, useState, Suspense } from "react"
+import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { toast } from "sonner"
 
-// Create a client component that uses searchParams
-function ConfirmationContent() {
+export default function ConfirmationPage() {
   const { selectedCrypto, clearCart } = useCart()
   const [orderDate, setOrderDate] = useState("")
   const [transactionHash, setTransactionHash] = useState("")
@@ -274,30 +273,4 @@ function ConfirmationContent() {
       <SiteFooter />
     </div>
   )
-}
-
-// Create a loading fallback for Suspense
-function ConfirmationLoading() {
-  return (
-    <div className="flex min-h-screen flex-col bg-grid-pattern">
-      <SiteHeader />
-      <main className="flex-1 py-12">
-        <div className="container px-4 md:px-6 max-w-4xl">
-          <div className="flex items-center justify-center h-96">
-            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-teal-400"></div>
-          </div>
-        </div>
-      </main>
-      <SiteFooter />
-    </div>
-  );
-}
-
-// Export the main page component with Suspense
-export default function ConfirmationPage() {
-  return (
-    <Suspense fallback={<ConfirmationLoading />}>
-      <ConfirmationContent />
-    </Suspense>
-  );
 } 

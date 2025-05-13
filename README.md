@@ -45,35 +45,6 @@ Open [http://localhost:3000](http://localhost:3000) to see the landing page.
 
 This project is configured for deployment on Vercel. Simply push changes to the main branch, and the application will be automatically deployed.
 
-## Environment Variables
-
-The following environment variables need to be set up for the application to work correctly:
-
-### Stripe Integration
-
-- `STRIPE_SECRET_KEY` - Your Stripe secret key for backend API calls
-- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` - Your Stripe publishable key for frontend components
-
-### Setting Up Environment Variables
-
-#### For Local Development:
-
-1. Create a `.env.local` file in the root directory
-2. Add the required environment variables:
-   ```
-   STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
-   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
-   ```
-
-#### For Vercel Deployment:
-
-1. Go to your Vercel project dashboard
-2. Navigate to "Settings" > "Environment Variables"
-3. Add each environment variable with its corresponding value
-4. Save the changes and redeploy your application
-
-Vercel will automatically include these environment variables during the build process and when running your application.
-
 ## Important Notes
 
 - This is a demo application. No real cryptocurrency transactions are processed.

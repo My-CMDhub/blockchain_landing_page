@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "buildCommand": "npm run vercel-build",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "nextjs",
+  "cleanUrls": true,
+  "ignoreCommand": "false",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+} 
