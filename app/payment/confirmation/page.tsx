@@ -8,18 +8,39 @@ import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { useCart } from "@/components/cart-context"
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
+import { toast } from "sonner"
 
 export default function ConfirmationPage() {
-  const { selectedCrypto } = useCart()
+  const { selectedCrypto, clearCart } = useCart()
   const [orderDate, setOrderDate] = useState("")
   const [transactionHash, setTransactionHash] = useState("")
+  const [paymentMethod, setPaymentMethod] = useState("")
+  const [stripeTransactionId, setStripeTransactionId] = useState("")
+  const searchParams = useSearchParams()
   
-  // Generate mock transaction hash
+  // Generate mock transaction hash and set payment method
   useEffect(() => {
     const hash = "0x" + Array.from({length: 64}, () => 
       Math.floor(Math.random() * 16).toString(16)).join('')
     
     setTransactionHash(hash)
+    
+    // Check if payment was made with Stripe
+    const method = searchParams.get('method')
+    setPaymentMethod(method === 'stripe' ? 'stripe' : selectedCrypto || 'ETH')
+    
+    // Check if we have a session ID from Stripe
+    const sessionId = searchParams.get('session_id')
+    if (sessionId) {
+      setStripeTransactionId(sessionId)
+      console.log("Stripe session ID:", sessionId)
+    } else {
+      // Generate a mock Stripe transaction ID
+      const stripeId = "ch_" + Math.random().toString(36).substring(2, 10) + 
+                      Math.random().toString(36).substring(2, 10)
+      setStripeTransactionId(stripeId)
+    }
     
     // Set current date and time
     const now = new Date()
@@ -32,7 +53,16 @@ export default function ConfirmationPage() {
       second: '2-digit',
       timeZoneName: 'short'
     }))
-  }, [])
+    
+    // Handle return from Stripe checkout
+    const stripeSuccess = searchParams.get('stripe_success')
+    if (stripeSuccess === 'true') {
+      // Clear the cart on successful payment
+      clearCart()
+      toast.success("Payment completed successfully!")
+    }
+    
+  }, [searchParams, selectedCrypto, clearCart])
   
   // Get explorer URL based on selected crypto
   const getExplorerUrl = () => {
@@ -48,9 +78,13 @@ export default function ConfirmationPage() {
     }
   }
   
-  // Get crypto icon component
-  const getCryptoName = () => {
-    switch(selectedCrypto) {
+  // Get payment method name
+  const getPaymentMethodName = () => {
+    if (paymentMethod === 'stripe') {
+      return "Credit Card (Stripe)"
+    }
+    
+    switch(paymentMethod) {
       case 'ETH':
         return "Ethereum (ETH)"
       case 'MATIC':
@@ -60,6 +94,28 @@ export default function ConfirmationPage() {
       default:
         return "Cryptocurrency"
     }
+  }
+  
+  // Get payment method icon
+  const renderPaymentMethodIcon = () => {
+    if (paymentMethod === 'stripe') {
+      return (
+        <svg className="h-4 w-4 mr-1 text-teal-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 9V15C4 15.5523 4.44772 16 5 16H19C19.5523 16 20 15.5523 20 15V9C20 8.44772 19.5523 8 19 8H5C4.44772 8 4 8.44772 4 9Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M4 11H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      )
+    }
+    
+    return (
+      <svg className="h-4 w-4 mr-1 text-teal-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L4 6V12L12 16L20 12V6L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M4 12V18L12 22L20 18V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 22V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 12L19.2 7.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M4.8 7.2L12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
   }
   
   return (
@@ -134,9 +190,7 @@ export default function ConfirmationPage() {
                     <div className="text-xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
                       $19.99 USD
                     </div>
-                    {selectedCrypto && (
-                      <div className="text-xs text-muted-foreground">Paid with {getCryptoName()}</div>
-                    )}
+                    <div className="text-xs text-muted-foreground">Paid with {getPaymentMethodName()}</div>
                   </div>
                 </div>
               </div>
@@ -153,24 +207,27 @@ export default function ConfirmationPage() {
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Payment Method</span>
                 <div className="flex items-center">
-                  <svg className="h-4 w-4 mr-1 text-teal-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L4 6V12L12 16L20 12V6L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M4 12V18L12 22L20 18V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 22V16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M12 12L19.2 7.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M4.8 7.2L12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span>{getCryptoName()}</span>
+                  {renderPaymentMethodIcon()}
+                  <span>{getPaymentMethodName()}</span>
                 </div>
               </div>
               
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Transaction Hash</span>
-                <Link href={getExplorerUrl()} target="_blank" className="flex items-center text-teal-400 hover:underline">
-                  <span className="font-mono text-xs">{`${transactionHash.substring(0, 6)}...${transactionHash.substring(62)}`}</span>
-                  <ExternalLink className="h-3 w-3 ml-1" />
-                </Link>
-              </div>
+              {paymentMethod !== 'stripe' && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Transaction Hash</span>
+                  <Link href={getExplorerUrl()} target="_blank" className="flex items-center text-teal-400 hover:underline">
+                    <span className="font-mono text-xs">{`${transactionHash.substring(0, 6)}...${transactionHash.substring(62)}`}</span>
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </Link>
+                </div>
+              )}
+              
+              {paymentMethod === 'stripe' && (
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Transaction ID</span>
+                  <span className="font-mono text-xs">{stripeTransactionId}</span>
+                </div>
+              )}
               
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Date & Time</span>

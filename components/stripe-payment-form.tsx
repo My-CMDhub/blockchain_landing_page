@@ -1,135 +1,140 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Shield } from "lucide-react"
+import { Shield, CreditCard, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useCart } from "./cart-context"
+import { toast } from "sonner"
+import { getStripe } from "@/lib/stripe-client"
+
+// We should log the state of the publishable key for debugging
+console.log("Stripe publishable key available:", !!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export function StripePaymentForm() {
   const router = useRouter()
-  const { getCartTotal, clearCart } = useCart()
+  const { getCartTotal, cartItems } = useCart()
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [stripeReady, setStripeReady] = useState(false)
   
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: '',
-    expiry: '',
-    cvc: '',
-    name: ''
-  })
-  
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-    
-    // Basic formatting for card number (spaces every 4 digits)
-    if (id === 'cardNumber') {
-      const formatted = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim()
-      setCardDetails({ ...cardDetails, [id]: formatted })
-      return
+  useEffect(() => {
+    // Check if the Stripe publishable key is available
+    if (process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+      setStripeReady(true)
+    } else {
+      console.error("Stripe publishable key is not set in the environment variables")
+      setStripeReady(false)
     }
-    
-    // Basic formatting for expiry (add slash after month)
-    if (id === 'expiry' && value.length === 2 && cardDetails.expiry.length === 1) {
-      setCardDetails({ ...cardDetails, [id]: value + '/' })
-      return
-    }
-    
-    setCardDetails({ ...cardDetails, [id]: value })
-  }
+  }, [])
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleStripePayment = async () => {
     setLoading(true)
-    setError(null)
     
-    // In a real app, we would process the payment with Stripe API here
-    setTimeout(() => {
-      // Simulate payment processing
+    try {
+      if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+        throw new Error('Stripe publishable key is not set')
+      }
+      
+      // Create a checkout session on the server
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: cartItems.map(item => ({
+            id: item.product.id,
+            name: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            description: item.product.description,
+          })),
+        }),
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Invalid response' }))
+        throw new Error(errorData.error || 'Network response was not ok')
+      }
+      
+      const session = await response.json()
+      console.log("Checkout session created:", session.id);
+      
+      // Get Stripe instance
+      const stripePromise = getStripe()
+      if (!stripePromise) {
+        throw new Error('Failed to initialize Stripe')
+      }
+      
+      const stripe = await stripePromise
+      if (!stripe) {
+        throw new Error('Failed to load Stripe')
+      }
+      
+      console.log("Redirecting to Stripe checkout...");
+      // Redirect to Stripe Checkout
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      })
+      
+      if (error) {
+        console.error("Stripe redirect error:", error);
+        toast.error(error.message || "Payment failed. Please try again.")
+        setLoading(false)
+      }
+      
+    } catch (error: any) {
+      console.error('Error creating checkout session:', error)
+      toast.error(error.message || "Payment failed. Please try again.")
       setLoading(false)
-      clearCart()
-      router.push('/payment/confirmation')
-    }, 1500)
+    }
   }
   
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="cardNumber">Card Number</label>
-        <input
-          id="cardNumber"
-          type="text"
-          placeholder="1234 5678 9012 3456"
-          maxLength={19}
-          className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm focus:border-teal-400 focus:outline-none focus:ring-1 focus:ring-teal-400"
-          value={cardDetails.cardNumber}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="expiry">Expiry Date</label>
-          <input
-            id="expiry"
-            type="text"
-            placeholder="MM/YY"
-            maxLength={5}
-            className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm focus:border-teal-400 focus:outline-none focus:ring-1 focus:ring-teal-400"
-            value={cardDetails.expiry}
-            onChange={handleInputChange}
-            required
-          />
+    <div className="space-y-6">
+      <div className="p-6 rounded-lg border border-white/10 bg-black/20">
+        <div className="flex items-center gap-3 mb-4">
+          <CreditCard className="h-5 w-5 text-teal-400" />
+          <p className="font-medium">Secure payment powered by Stripe</p>
         </div>
-        <div className="space-y-2">
-          <label className="text-sm font-medium" htmlFor="cvc">CVC</label>
-          <input
-            id="cvc"
-            type="text"
-            placeholder="123"
-            maxLength={3}
-            className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm focus:border-teal-400 focus:outline-none focus:ring-1 focus:ring-teal-400"
-            value={cardDetails.cvc}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-      </div>
-      
-      <div className="space-y-2">
-        <label className="text-sm font-medium" htmlFor="name">Cardholder Name</label>
-        <input
-          id="name"
-          type="text"
-          placeholder="John Doe"
-          className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm focus:border-teal-400 focus:outline-none focus:ring-1 focus:ring-teal-400"
-          value={cardDetails.name}
-          onChange={handleInputChange}
-          required
-        />
-      </div>
-      
-      {error && (
-        <div className="text-sm text-red-400">
-          {error}
-        </div>
-      )}
-      
-      <div className="flex justify-between items-center pt-4">
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-          <Shield className="h-4 w-4" />
-          <span>Secure Connection</span>
-        </div>
+        <p className="text-sm text-muted-foreground mb-6">
+          You will be redirected to Stripe's secure payment page to complete your purchase.
+          After payment, you'll be returned to our site.
+        </p>
+        
+        {!stripeReady && (
+          <div className="bg-red-500/20 border border-red-500/50 rounded p-3 mb-4 text-sm">
+            <p className="font-medium mb-1">Stripe configuration missing</p>
+            <p>The Stripe publishable key is not set. Please check your environment variables.</p>
+          </div>
+        )}
         
         <Button 
-          type="submit" 
-          className="bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 border-none"
-          disabled={loading}
+          onClick={handleStripePayment} 
+          className="w-full bg-gradient-to-r from-teal-400 to-blue-500 hover:from-teal-500 hover:to-blue-600 border-none py-6 text-base font-medium"
+          disabled={loading || !stripeReady}
         >
-          {loading ? 'Processing...' : `Pay $${getCartTotal().toFixed(2)} USD`}
+          {loading ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Redirecting to Stripe...
+            </>
+          ) : (
+            `Pay $${getCartTotal().toFixed(2)} with Stripe`
+          )}
         </Button>
       </div>
-    </form>
+      
+      <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+        <Shield className="h-4 w-4" />
+        <span>Payments are secure and encrypted</span>
+      </div>
+      
+      <div className="text-center text-xs text-muted-foreground">
+        <p>This is a demo. No actual payment will be processed.</p>
+        <p>You can use Stripe test card: 4242 4242 4242 4242</p>
+        <p>Any future date, any 3 digits for CVC, and any postal code.</p>
+      </div>
+    </div>
   )
 } 
