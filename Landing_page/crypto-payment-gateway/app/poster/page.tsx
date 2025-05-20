@@ -119,11 +119,11 @@ export default function QRCodePoster() {
             <div className="col-span-1 flex items-center justify-center">
             <EthereumCoinsBackground />
 
-              <div className="relative w-[200px] h-[200px]">
+              <div className="relative w-full h-full">
                 <div className="absolute inset-0 bg-blue-500/10 blur-xl rounded-full"></div>
-                <div className="eth-3d-display relative z-10 w-[200px] h-[200px]">
+                <div className="eth-3d-display relative z-10 w-full h-full">
                   {/* Only render one version of the Ethereum model based on client mounting */}
-                  <EthereumShowcase className="w-[170px] h-[170px]" enableZoom={false} autoRotate={true} />
+                  <EthereumShowcase className="w-[200px] h-[200px]" enableZoom={true} autoRotate={true} />
                 </div>
               </div>
             </div>
