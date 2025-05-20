@@ -10,7 +10,13 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "CryptoGate | Ethereum Payment Gateway",
   description: "Secure, HD wallet-based Ethereum payment gateway for merchants",
-  generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.png', type: 'image/png' }
+    ]
+  }
 }
 
 export default function RootLayout({
@@ -31,6 +37,8 @@ export default function RootLayout({
             `,
           }}
         />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
       </head>
       <body className={`${inter.className} bg-background text-foreground`}>
         <Providers>
