@@ -6,6 +6,7 @@ import './poster.css';
 import { Zap, CheckCircle, ArrowRight, Globe, Shield, Lock } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { EthereumShowcase } from '@/components/ethereum-showcase';
+import { EthereumCoinsBackground } from "@/components/ethereum-coins-background"
 // Static placeholder component for 3D model
 const EthereumPlaceholder = () => (
   <div className="eth-static-placeholder">⧫</div>
@@ -116,11 +117,13 @@ export default function QRCodePoster() {
 
             {/* 3D Model - Only rendered on client after mounting, takes 1/3 of the space */}
             <div className="col-span-1 flex items-center justify-center">
-              <div className="relative w-[180px] h-[180px]">
+            <EthereumCoinsBackground />
+
+              <div className="relative w-[200px] h-[200px]">
                 <div className="absolute inset-0 bg-blue-500/10 blur-xl rounded-full"></div>
-                <div className="eth-3d-display relative z-10 w-full h-full">
+                <div className="eth-3d-display relative z-10 w-[200px] h-[200px]">
                   {/* Only render one version of the Ethereum model based on client mounting */}
-                  <EthereumShowcase className="w-[200px] h-[200px]" enableZoom={false} autoRotate={true} />
+                  <EthereumShowcase className="w-[170px] h-[170px]" enableZoom={false} autoRotate={true} />
                 </div>
               </div>
             </div>
