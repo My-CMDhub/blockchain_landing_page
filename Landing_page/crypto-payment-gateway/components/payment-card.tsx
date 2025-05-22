@@ -34,7 +34,7 @@ export function PaymentCard() {
             <div className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
               0.05 ETH
             </div>
-            <div className="text-sm text-muted-foreground">≈ $125.00 USD</div>
+            <div className="text-sm text-muted-foreground">≈ $125.00 AUD</div>
           </div>
           <div className="mx-auto mb-4 h-48 w-48 rounded-lg bg-black/30 p-2 flex items-center justify-center relative group">
             <Ethereum3DModel className="w-full h-full" />

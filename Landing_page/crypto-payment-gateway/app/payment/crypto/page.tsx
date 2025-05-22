@@ -148,7 +148,7 @@ export default function CryptoPaymentPage() {
                   </div>
                   
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">USD Value:</span>
+                    <span className="text-muted-foreground">AUD Value:</span>
                     <span className="font-mono font-bold">${cartTotal.toFixed(2)}</span>
                   </div>
                 </div>

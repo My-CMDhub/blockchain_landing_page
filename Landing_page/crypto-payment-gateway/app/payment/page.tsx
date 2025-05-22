@@ -79,7 +79,7 @@ export default function PaymentPage() {
                     <CardDescription>ETH</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="font-mono text-sm">1 ETH = $3917.39 USD</div>
+                    <div className="font-mono text-sm">1 ETH = $3917.39 AUD</div>
                     <div className="font-mono text-sm mt-1">
                       Pay: {(cartTotal / 3917.39).toFixed(8)} ETH
                     </div>
@@ -107,7 +107,7 @@ export default function PaymentPage() {
                     <CardDescription>MATIC</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="font-mono text-sm">1 MATIC = $0.40 USD</div>
+                    <div className="font-mono text-sm">1 MATIC = $0.40 AUD</div>
                     <div className="font-mono text-sm mt-1">
                       Pay: {(cartTotal / 0.40).toFixed(2)} MATIC
                     </div>
@@ -135,7 +135,7 @@ export default function PaymentPage() {
                     <CardDescription>BNB</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="font-mono text-sm">1 BNB = $1036.47 USD</div>
+                    <div className="font-mono text-sm">1 BNB = $1036.47 AUD</div>
                     <div className="font-mono text-sm mt-1">
                       Pay: {(cartTotal / 1036.47).toFixed(6)} BNB
                     </div>

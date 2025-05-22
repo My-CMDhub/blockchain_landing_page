@@ -114,7 +114,7 @@ export default function SingleProductPage() {
               <div>
                 <h1 className="text-3xl font-bold tracking-tight md:text-4xl">{product.name}</h1>
                 <div className="mt-4 flex items-baseline gap-2">
-                  <span className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">${product.price.toFixed(2)} USD</span>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">${product.price.toFixed(2)} AUD</span>
                   <span className="text-sm text-muted-foreground">≈ {product.ethPrice.toFixed(8)} ETH</span>
                 </div>
               </div>

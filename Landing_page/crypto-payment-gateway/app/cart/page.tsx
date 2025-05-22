@@ -103,7 +103,7 @@ export default function CartPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Subtotal ({totalItems} {totalItems === 1 ? 'item' : 'items'})</span>
-                    <span className="font-bold">${cartTotal.toFixed(2)} USD</span>
+                    <span className="font-bold">${cartTotal.toFixed(2)} AUD</span>
                   </div>
                   
                   <Separator className="bg-white/10" />
@@ -112,7 +112,7 @@ export default function CartPage() {
                     <span className="text-muted-foreground">Total</span>
                     <div className="text-right">
                       <div className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
-                        ${cartTotal.toFixed(2)} USD
+                        ${cartTotal.toFixed(2)} AUD
                       </div>
                     </div>
                   </div>

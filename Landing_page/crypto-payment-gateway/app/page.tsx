@@ -506,10 +506,11 @@ export default function Home() {
                     <path d="M9 18c-4.51 2-5-2-7-2"></path>
                   </svg>
                 </Link>
-                <Link href="#" className="text-muted-foreground hover:text-teal-400">
+                <Link href="https://www.linkedin.com/in/dhruvpatel-profile/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-teal-400">
                   <span className="sr-only">LinkedIn</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
@@ -520,11 +521,21 @@ export default function Home() {
                     strokeLinejoin="round"
                     className="h-5 w-5"
                   >
+                    
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                     <rect width="4" height="12" x="2" y="9"></rect>
                     <circle cx="4" cy="4" r="2"></circle>
                   </svg>
                 </Link>
+                <span className="mx-2 text-muted-foreground/40">|</span>
+            <Link 
+              href="https://www.linkedin.com/in/dhruvpatel-profile/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-xs text-muted-foreground/60 hover:text-teal-400 transition-colors"
+            >
+              Designed by Dhruv Patel
+            </Link>
               </div>
             </div>
           </div>

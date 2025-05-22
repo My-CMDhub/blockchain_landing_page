@@ -157,7 +157,7 @@ function ConfirmationContent() {
                 </div>
               </div>
               <div className="text-right">
-                <div className="font-bold">$19.99 USD</div>
+                <div className="font-bold">$19.99 AUD</div>
                 <div className="text-xs text-muted-foreground">Order complete</div>
               </div>
             </div>
@@ -167,15 +167,15 @@ function ConfirmationContent() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>$19.99 USD</span>
+                <span>$19.99 AUD</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Shipping</span>
-                <span>$0.00 USD</span>
+                <span>$0.00 AUD</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax</span>
-                <span>$0.00 USD</span>
+                <span>$0.00 AUD</span>
               </div>
             </div>
             
@@ -185,7 +185,7 @@ function ConfirmationContent() {
               <span className="text-lg font-medium">Total</span>
               <div className="text-right">
                 <div className="text-xl font-bold bg-gradient-to-r from-teal-400 to-blue-400 bg-clip-text text-transparent">
-                  $19.99 USD
+                  $19.99 AUD
                 </div>
                 <div className="text-xs text-muted-foreground">Paid with {getPaymentMethodName()}</div>
               </div>
